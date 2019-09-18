@@ -1,0 +1,57 @@
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.util.Range;
+
+/**
+ * Created by slistudent on 9/4/19.
+ */
+
+@TeleOp(name="Teleop POV")
+public class ExampleTeleOp extends LinearOpMode {
+
+    public DcMotor mtr0;
+    public DcMotor mtr1;
+    public DcMotor mtr2;
+    public DcMotor mtr3;
+
+    public double leftPower;
+    public double rightPower;
+    public double drive;
+    public double turn;
+
+    public void runOpMode() {
+
+        mtr0 = hardwareMap.dcMotor.get("motor_0");
+        mtr1 = hardwareMap.dcMotor.get("motor_1");
+        mtr2 = hardwareMap.dcMotor.get("motor_2");
+        mtr3 = hardwareMap.dcMotor.get("motor_3");
+
+        mtr0.setDirection(DcMotorSimple.Direction.FORWARD);
+        mtr1.setDirection(DcMotorSimple.Direction.REVERSE);
+        mtr2.setDirection(DcMotorSimple.Direction.REVERSE);
+        mtr3.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        waitForStart();
+
+        while (opModeIsActive()) {
+
+            drive = -gamepad1.left_stick_y;
+            turn = gamepad1.right_stick_x;
+
+            leftPower = Range.clip(drive + turn, -1, 1);
+            rightPower = Range.clip(drive - turn, -1, 1);
+
+            mtr0.setPower(leftPower);
+            mtr1.setPower(rightPower);
+            mtr2.setPower(rightPower);
+            mtr3.setPower(leftPower);
+
+            sleep(50);
+        }
+
+    }
+}
